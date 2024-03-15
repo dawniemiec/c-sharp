@@ -12,120 +12,129 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xaml;
 
-namespace WpfApp2
+namespace Lab2
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        
         public MainWindow()
         {
             InitializeComponent();
-            txtInputA.Visibility = Visibility.Hidden;
-            txtInputB.Visibility = Visibility.Hidden;
-            txtInputC.Visibility = Visibility.Hidden;
-        }
+            //for(int i= 0; i < 2; i++) {
+            //    myGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            //    myGrid.RowDefinitions.Add(new RowDefinition());
+            //}
+            //myGrid.ShowGridLines = true;
+            //Grid.SetColumn(lbxTest1, 1);
+            //Grid.SetRow(lbxTest1, 1);
+            //Grid.SetColumn(btnTest1, 2);
+            //Grid.SetRow(btnTest1, 1);
 
-        private void btnOblicz_Click(object sender, RoutedEventArgs e)
-        {
-            showResult();
-        }
-
-        private void showResult() 
-        { 
-            double a, b, c, x1 = double.NaN, x2 = double.NaN;
-            try { 
-                getValues(out a, out b, out c);
-                doMath(out x1, out x2, a, b, c);
-                if(double.IsNaN(x1) || double.IsNaN(x2))
-                {
-                    txtWynik.Text = "Równanie nie ma rozwiązań";
-                }
-                else if (x1 == x2 )
-                {
-                    txtWynik.Text = $"Równanie ma jeden wspólny pierwiastek: {x1:F2}";
-                }
-                else { txtWynik.Text = $"Pierwiastki równania to {x1:F2} i {x2:F2}"; }
-                
-            }
-            catch (InvalidOperationException)
-            {
-                txtWynik.Text = "To nie jest równanie kwadratowe";
-            } 
-        }
-
-        private void getValues(out double a, out double b, out double c) 
-        {
-            a = 0; b = 0; c = 0;
-            try {
-                if (chkA.IsChecked == true)
-                {
-                    a = Convert.ToDouble(txtInputA.Text);
-                }
-                if (chkB.IsChecked == true)
-                {
-                    b = Convert.ToDouble(txtInputB.Text);
-                }
-                if (chkC.IsChecked == true)
-                {
-                    c = Convert.ToDouble(txtInputC.Text);
-                }
-            }
-            catch { MessageBox.Show("Zły format liczb"); }
-            if (a == 0) throw new InvalidOperationException("Brak parametru a, to nie jest równ. kwadratowe!");
             
         }
-        private void doMath(out double x1, out double x2, double a, double b, double c)
+        private double Iloczyn(double a, double b) {
+            return a * b;
+        }
+        private double Kwadrat(double a)
         {
-            x1 = double.NaN; x2 = double.NaN;
-            double delta = b * b - 4 * a * c;
-            if (delta > 0) {
-                x1 = (-b - (Math.Sqrt(delta))) / (2 * a);
-                x2 = (-b + (Math.Sqrt(delta))) / (2 * a);
-            }
-            else if (delta == 0)
-            {
-                x1 = -b / (2 * a);
-                x2 = x1;
-            }
+            return Iloczyn(a, a);
+        }
+        private double PoleKola(double r)
+        {
+            return Iloczyn(Math.PI, Kwadrat(r));
+        }
+        private double ObjetoscWalca(double h, double r)
+        {
+            return Iloczyn(PoleKola(r), h);
+        }
+        private double ObjetoscWalca(double h)
+        {
+            return ObjetoscWalca(h, h / 2);
         }
 
-        private void chkA_Click(object sender, RoutedEventArgs e)
+        private void btnTest1_Click(object sender, RoutedEventArgs e)
         {
-            if (chkA.IsChecked == true)
-            {
-                txtInputA.Visibility = Visibility.Visible;
+            double a, b, r, h;
+            a = 5; b = 2; r = 4; h = 3;
 
-            }
-            else
+            lbxTest1.Items.Add(Iloczyn(a, b));
+            lbxTest1.Items.Add(Kwadrat(a));
+            lbxTest1.Items.Add(PoleKola(r));
+            lbxTest1.Items.Add(ObjetoscWalca(h,r));
+            lbxTest1.Items.Add(ObjetoscWalca(h));
+
+        }
+
+        private void Prostokat(double szer, double wys, out double pole, out double obw, out double przek)
+        {
+            pole = Iloczyn(szer, wys);
+            obw = 2 * szer + 2 * wys;
+            przek = Math.Sqrt(Kwadrat(wys) + Kwadrat(szer));
+
+        }
+
+        private void btnTest3_Click(object sender, RoutedEventArgs e)
+        {
+            double szer, wys, pole, obw, przek;
+            wys = Convert.ToDouble(txtWys.Text);
+            szer = Convert.ToDouble(txtSzer.Text);
+
+            Prostokat(szer, wys, out pole, out obw, out przek);
+            MessageBox.Show($"Pole prostokąta wynosi: {pole:F2}, obwód: {obw:F2}, a przekąna: {przek:F2}");
+        }
+
+        private void btnTest4_Click(object sender, RoutedEventArgs e)
+        {
+            double[,] arrPunkt = new double[,] { { 10, 10, 10, 150 }, { 90, 10, 90, 150 }, { 10, 10, 90, 10 }, { 10, 40, 90, 40 } };
+            System.Windows.Media.Color[] colors = { Colors.Green, Colors.Green, Colors.Red, Colors.Black };
+            
+            for(int i =0; i < 4; i++)
             {
-                txtInputA.Visibility = Visibility.Hidden;
+                rysLinie(arrPunkt[i, 0], arrPunkt[i, 1], arrPunkt[i, 2], arrPunkt[i, 3], colors[i]);
             }
         }
-        private void chkB_Click(object sender, RoutedEventArgs e)
+        private void rysLinie(double x1, double y1, double x2, double y2, Color color)
         {
-            if (chkB.IsChecked == true)
-            {
-                txtInputB.Visibility = Visibility.Visible;
+            SolidColorBrush brush= new SolidColorBrush(color);
 
-            }
-            else
-            {
-                txtInputB.Visibility = Visibility.Hidden;
-            }
+            Line mLine = new Line();
+            mLine.X1 = x1;
+            mLine.X2 = x2;
+            mLine.Y1 = y1;
+            mLine.Y2= y2;
+            mLine.Stroke = brush;
+            mLine.StrokeThickness = 1;
+            cv4.Children.Add(mLine);
         }
-        private void chkC_Click(object sender, RoutedEventArgs e)
+
+        enum typDzialania
         {
-            if (chkC.IsChecked == true)
+            Sum = 0,
+            Min = 1,
+            Max = 2
+        }
+
+        private void turboLiczydlo(typDzialania dzialanie, double a, double b)
+        {
+            if (dzialanie == typDzialania.Sum)
             {
-                txtInputC.Visibility = Visibility.Visible;
+                double suma = a + b;
+                MessageBox.Show($"Wynik działania sumy to: {suma:F2}");
+            } else if (dzialanie == typDzialania.Min)
+            {
+                double min = Math.Min(a, b);
+                MessageBox.Show($"Wynik działania sumy to: {min:F2}");
             }
-            else {
-                txtInputC.Visibility = Visibility.Hidden;
+            else if (dzialanie == typDzialania.Max)
+            {
+                double max = Math.Max(a,b);
+                MessageBox.Show($"Wynik działania sumy to: {max:F2}");
             }
+
         }
     }
 }
