@@ -12,8 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 
-namespace trees
+namespace WpfApp3
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,18 +24,76 @@ namespace trees
         public MainWindow()
         {
             InitializeComponent();
-            rysujElipse(0, 0, 100, 100, Brushes.Green);
-            rysujKolo(150, 150, 50, Brushes.Black);
-            rysujDrzewo(150, 350, 100, 50);
-            rysLosSzpalDrzew(290, 0, 300, 0, 150, 0, 100);
-            //Line line= new Line();
-            //line.X1 = 150;
-            //line.X2= 150;
-            //line.Y1= 0;
-            //line.Y2= 150;
-            //line.Stroke= Brushes.Black;
-            //line.StrokeThickness= 1;
-            //cvBg.Children.Add(line);
+            //Gwiazda(100, 80, 80);
+            //GwiazdaRekur(100, 80, 80,5);
+            
+        }
+        enum typDzialania
+        {
+            Sum = 0,
+            Min = 1,
+            Max = 2
+        }
+
+        private void turboLiczydlo(typDzialania dzialanie, double a, double b)
+        {
+            if (dzialanie == typDzialania.Sum)
+            {
+                double suma = a + b;
+                MessageBox.Show($"Wynik działania sumy to: {suma:F2}");
+            }
+            else if (dzialanie == typDzialania.Min)
+            {
+                double min = Math.Min(a, b);
+                MessageBox.Show($"Wynik działania sumy to: {min:F2}");
+            }
+            else if (dzialanie == typDzialania.Max)
+            {
+                double max = Math.Max(a, b);
+                MessageBox.Show($"Wynik działania sumy to: {max:F2}");
+            }
+
+        }
+
+        private void sum_Checked(object sender, RoutedEventArgs e)
+        {
+            turboLiczydlo(typDzialania.Sum, 5, 6);
+        }
+
+        private void min_Checked(object sender, RoutedEventArgs e)
+        {
+            turboLiczydlo(typDzialania.Min, 5, 6);
+
+        }
+
+        private void Gwiazda(double dlRam, double x, double y)
+        {
+            double angle = 60;
+            double st_angle = 0;
+            for(int i = 0; i < 6; i++)
+            {
+                double X2 = x + dlRam * Math.Cos(st_angle * Math.PI / 180);
+                double Y2 = y +dlRam* Math.Sin(st_angle * Math.PI / 180);
+                RysujLinie(x, X2, y, Y2);
+                st_angle += angle;
+            }
+        }
+        private void GwiazdaRekur(double dlRam, double x, double y, double minDlugosc)
+        {
+            double angle = 60;
+            double st_angle = 0;
+            for (int i = 0; i < 6; i++)
+            {
+                double X2 = x + dlRam * Math.Cos(st_angle * Math.PI / 180);
+                double Y2 = y + dlRam * Math.Sin(st_angle * Math.PI / 180);
+                RysujLinie(x, X2, y, Y2);
+                if (dlRam >= minDlugosc)
+                {
+                    GwiazdaRekur(dlRam / 3, X2, Y2, minDlugosc);
+                }
+
+                st_angle += angle;
+            }
         }
         private void RysujLinie(double wspX1, double wspX2, double wspY1, double wspY2, int grubosc = 1, SolidColorBrush kolor = null)
         {
@@ -47,50 +106,74 @@ namespace trees
             cvBg.Children.Add(mLine);
         }
 
-        public void rysujElipse(double x, double y, double w, double h, SolidColorBrush color)
+        private void refSwap(ref int a, ref int b)
         {
-            Ellipse ellipse = new Ellipse();
-            //ellipse.Stroke= color;
-            ellipse.Fill= color;
-            ellipse.Width = w;
-            ellipse.Height= h;
-            Canvas.SetTop(ellipse,y);
-            Canvas.SetLeft(ellipse,x);
-            cvBg.Children.Add(ellipse);
-        }
-        private void rysujOkrag(double x, double y, double w, double h, SolidColorBrush color)
-        {
-            Ellipse ellipse = new Ellipse();
-            ellipse.Stroke= color;
-            ellipse.StrokeThickness = 10;
-            ellipse.Width = w;
-            ellipse.Height = h;
-            Canvas.SetTop(ellipse, y);
-            Canvas.SetLeft(ellipse, x);
-            cvBg.Children.Add(ellipse);
+            int temp = a;
+            a = b;
+            b = temp;
+            //MessageBox.Show($"A={a}, B={b}");
         }
 
-        public void rysujKolo(double x, double y, double r, SolidColorBrush color)
+        private void test3_Click(object sender, RoutedEventArgs e)
         {
-            rysujElipse(x-r, y-r, r*2, r*2, color);
+            int A = 23, B = 12;
+            refSwap(ref A, ref B);
+            MessageBox.Show($"A={A}, B={B}");
         }
-        private void rysujDrzewo(double x, double y, double l, double r)
-        {
-            RysujLinie(x, x, y, y - l, 10, Brushes.Brown);
-            rysujKolo(x, y - l - r, r, Brushes.Green);
-            rysujOkrag(x - r, y - l - 2*r, r * 2, r * 2, Brushes.DarkGreen);
 
-        }
-        private void rysLosSzpalDrzew(double y, int minP, int maxP, int minPL, int maxPL, int minR, int maxR)
+        private void test4_Click(object sender, RoutedEventArgs e)
         {
-            Random gen = new Random();
-            cvBg.Children.Clear();
-            for(int i=0; i<4; i++)
+            double[,] liczba = new double[5, 3]
             {
-                double x = gen.Next(minP, maxP);
-                double l = gen.Next(minPL, maxPL);
-                double r = gen.Next(minR, maxR);
-                rysujDrzewo(x, y, l, r);
+                { 1.234, 5.678, 9.012 },
+                { 3.456, 7.890, 1.234 },
+                { 5.678, 0.123, 4.567 },
+                { 7.890, 2.345, 7.890 },
+                { 9.012, 4.567, 0.123 }
+            };
+            double[] sumKol = new double[3];
+            for(int i = 0; i < liczba.GetLength(0); i++)
+            {
+                double sumaWiersza = 0;
+                string wiersz = "";
+                for(int j= 0; j < liczba.GetLength(1); j++)
+                {
+                    sumaWiersza += liczba[i, j];
+                    wiersz+=string.Format("{0:0.0}", liczba[i,j]).PadLeft(8);
+                    wiersz += $" ";
+                    sumKol[j] += liczba[i, j];
+                }
+                wiersz += $" [{sumaWiersza:0.0}]";
+                lBox.Items.Add(wiersz);
+            }
+            string kolRes = "";
+            for(int i = 0; i < sumKol.Length; i++)
+            {
+                kolRes += $"[{sumKol[i]:0.0}]".PadLeft(8);
+                kolRes+= $" ";
+            }
+            lBox.Items.Add(kolRes);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            int[][] jagged = new int[3][];
+            int j = 6;
+            for (int i=0; i<3; i++)
+            {
+                
+                jagged[i] = new int[j];
+                j--;
+                
+            }
+            j = 6;
+            for (int i = 0; i < jagged.Length; i++)
+            {
+                for(int k = 0; k < j; k++)
+                {
+                    jagged[i][k] = (i + 1) * (k + 2);
+                    j--;
+                }
             }
         }
     }
