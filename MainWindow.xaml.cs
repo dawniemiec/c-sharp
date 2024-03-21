@@ -12,8 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Motoryzacja;
 
-namespace kol2
+namespace lab3
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,37 +24,31 @@ namespace kol2
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        public double ObjetoscStozka(double promien, double wys)
-        {
-            return 1/3.0*wys*Math.PI*Math.Pow(2, promien);
-        }
-
-        public void PoliczDaneStozka(double r, double h, out double v, out double mass)
-        {
-            v = 0; mass = 0;
-            v = ObjetoscStozka(r, h);
-            mass = v * 0.001;
             
-
         }
-
-        private void btnLicz_Click(object sender, RoutedEventArgs e)
+        private void WyswietlPojazdy(List<Pojazd> list)
         {
-            double V, mass;
-            try
+            foreach(Pojazd p in list)
             {
-                double r = Convert.ToDouble(txtProm.Text);
-                double h = Convert.ToDouble(txtWys.Text);
-                PoliczDaneStozka(r, h, out V, out mass);
-                MessageBox.Show($"Objętość stożka wynosi {V:F2} cm3, a masa {mass:F2} kg");
+                lBoxPojazd.Items.Add(p);
             }
-            catch(Exception ) { MessageBox.Show($"Błędne wartości pól"); }
-            
-            
-            
-            
+        }
+
+        private void btnZadA_Click(object sender, RoutedEventArgs e)
+        {
+            //var pojazd = new Pojazd();
+            //pojazd.Nazwa = "125p";
+            List<Pojazd> listP = new List<Pojazd>() { new Pojazd()};
+            listP.Add(new Pojazd(100, "Maluch"));
+            listP.Add(new Pojazd(300, "Lambo"));
+            listP.Add(new Pojazd(30, 600, "Italo"));
+            listP.Add(new Pojazd(16, 123.54, "EP07"));
+            listP.Add(new PojazdMechaniczny());
+            listP.Add(new PojazdMechaniczny(4, 90, "Aygo", 45));
+            listP.Add(new Samochod());
+            listP.Add(new Samochod("Citroen", 4,200,"Spacetourer", 180));
+            WyswietlPojazdy(listP);
+
         }
     }
 }
