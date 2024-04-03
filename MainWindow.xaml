@@ -9,6 +9,7 @@
     <Grid>
         <Button x:Name="btnZadA" Content="ZadA" HorizontalAlignment="Left" Margin="64,49,0,0" VerticalAlignment="Top" Click="btnZadA_Click"/>
         <ListBox x:Name="lBoxPojazd" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="122,10,427,244"/>
+        <ListBox x:Name="lBoxHistoria" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="442,10,107,244"/>
 
     </Grid>
 </Window>

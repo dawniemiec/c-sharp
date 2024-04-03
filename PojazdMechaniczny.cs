@@ -6,18 +6,20 @@ using System.Threading.Tasks;
 
 namespace Motoryzacja
 {
-    public class PojazdMechaniczny:Pojazd
+    public class PojazdMechaniczny : Pojazd
     {
         private double mocSilnika;
-        public double MocSilnika { 
-            get { return mocSilnika;}
-            set {
+        public double MocSilnika
+        {
+            get { return mocSilnika; }
+            set
+            {
                 if (value < 0) throw new ArgumentException("Ujemna moc przyda się tylko na rachunku za prąd");
-                mocSilnika = value; 
+                mocSilnika = value;
             }
         }
 
-        public PojazdMechaniczny():base() { }
+        public PojazdMechaniczny() : base() { }
         public PojazdMechaniczny(int kola, double predkosc, string nazwa) : base(kola, predkosc, nazwa)
         {
             MocSilnika = 0;
@@ -26,10 +28,10 @@ namespace Motoryzacja
         {
             MocSilnika = moc;
         }
-       
+
         public override string ToString()
         {
-            return base.ToString()+$" Moc: {MocSilnika}";
+            return base.ToString() + $" Moc: {MocSilnika}";
         }
     }
 }

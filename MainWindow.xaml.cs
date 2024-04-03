@@ -24,11 +24,11 @@ namespace lab3
         public MainWindow()
         {
             InitializeComponent();
-            
+
         }
         private void WyswietlPojazdy(List<Pojazd> list)
         {
-            foreach(Pojazd p in list)
+            foreach (Pojazd p in list)
             {
                 lBoxPojazd.Items.Add(p);
             }
@@ -38,7 +38,7 @@ namespace lab3
         {
             //var pojazd = new Pojazd();
             //pojazd.Nazwa = "125p";
-            List<Pojazd> listP = new List<Pojazd>() { new Pojazd()};
+            List<Pojazd> listP = new List<Pojazd>() { new Pojazd() };
             listP.Add(new Pojazd(100, "Maluch"));
             listP.Add(new Pojazd(300, "Lambo"));
             listP.Add(new Pojazd(30, 600, "Italo"));
@@ -46,8 +46,13 @@ namespace lab3
             listP.Add(new PojazdMechaniczny());
             listP.Add(new PojazdMechaniczny(4, 90, "Aygo", 45));
             listP.Add(new Samochod());
-            listP.Add(new Samochod("Citroen", 4,200,"Spacetourer", 180));
+            listP.Add(new Samochod("Citroen", 4, 200, "Spacetourer", 180));
             WyswietlPojazdy(listP);
+
+            Pojazd p1 = new Pojazd(10, "nazwa1");
+            p1.Nazwa = "nazwa2";
+            p1.Nazwa = "nazwa3";
+            p1.WyswietlHistorie(ref lBoxHistoria);
 
         }
     }
