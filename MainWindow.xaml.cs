@@ -12,9 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Motoryzacja;
+using Geometria;
 
-namespace lab3
+namespace Lab04
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,35 +24,32 @@ namespace lab3
         public MainWindow()
         {
             InitializeComponent();
-
-        }
-        private void WyswietlPojazdy(List<Pojazd> list)
-        {
-            foreach (Pojazd p in list)
-            {
-                lBoxPojazd.Items.Add(p);
-            }
+            
         }
 
-        private void btnZadA_Click(object sender, RoutedEventArgs e)
+        private void btnOblicz_Click(object sender, RoutedEventArgs e)
         {
-            //var pojazd = new Pojazd();
-            //pojazd.Nazwa = "125p";
-            List<Pojazd> listP = new List<Pojazd>() { new Pojazd() };
-            listP.Add(new Pojazd(100, "Maluch"));
-            listP.Add(new Pojazd(300, "Lambo"));
-            listP.Add(new Pojazd(30, 600, "Italo"));
-            listP.Add(new Pojazd(16, 123.54, "EP07"));
-            listP.Add(new PojazdMechaniczny());
-            listP.Add(new PojazdMechaniczny(4, 90, "Aygo", 45));
-            listP.Add(new Samochod());
-            listP.Add(new Samochod("Citroen", 4, 200, "Spacetourer", 180));
-            WyswietlPojazdy(listP);
+            var okno = new DaneWejscioweOkno();
+            //okno.Show();
+            okno.ShowDialog();
+            double wys, szer, pole;
 
-            Pojazd p1 = new Pojazd(10, "nazwa1");
-            p1.Nazwa = "nazwa2";
-            p1.Nazwa = "nazwa3";
-            p1.WyswietlHistorie(ref lBoxHistoria);
+            wys = okno.Wysokosc;
+            szer = okno.Szerokosc;
+            pole = wys*szer;
+
+            var oknWyj = new DaneWyjscioweOkno(pole);
+            oknWyj.ShowDialog();
+        }
+
+        private void btnStoz_Click(object sender, RoutedEventArgs e)
+        {
+            Stozek stozek = new Geometria.Stozek(14, "s", 5.6, 44, 3);
+            lblS.Content = stozek;
+        }
+
+        private void btnKula_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }
