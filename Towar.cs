@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lab6
+namespace lab6dom
 {
     public enum Kategoria
     {
         kategoria1,
-        kategoria2, 
+        kategoria2,
         kategoria3
     }
     public class Towar
@@ -27,6 +27,11 @@ namespace lab6
         public override string ToString()
         {
             return $"Nazwa: {Nazwa}, Cena: {Cena}, Ilosc: {Ilosc}, Kategoria: {Kat}";
+        }
+
+        public void Wyswietl(Action<string> action)
+        {
+            action?.Invoke(ToString());
         }
     }
 }
