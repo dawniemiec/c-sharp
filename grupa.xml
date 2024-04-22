@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Grupa xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Nazwa>S32</Nazwa>
+  <Studenci>
+    <Student>
+      <Nazwisko>Kowalski</Nazwisko>
+      <Ocena>4.5</Ocena>
+    </Student>
+    <Student>
+      <Nazwisko>Nowak</Nazwisko>
+      <Ocena>3.5</Ocena>
+    </Student>
+    <Student>
+      <Nazwisko>Rak</Nazwisko>
+      <Ocena>4</Ocena>
+    </Student>
+    <Student>
+      <Nazwisko>Mak</Nazwisko>
+      <Ocena>2.5</Ocena>
+    </Student>
+  </Studenci>
+</Grupa>
