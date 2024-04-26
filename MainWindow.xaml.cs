@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,10 +16,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 
-namespace lab7
+namespace lab7dom
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -28,7 +28,6 @@ namespace lab7
         {
             InitializeComponent();
         }
-
         Grupa grupa1 = new Grupa()
         {
             Nazwa = "S32",
@@ -41,77 +40,61 @@ namespace lab7
             }
         };
 
-        private void btnMeld_Click(object sender, RoutedEventArgs e)
+        private void SerialJSON_Click(object sender, RoutedEventArgs e)
         {
-            FileStream fs = new FileStream("C:\\Users\\Student\\Documents\\cs_kolDN\\lab7\\rejestr.txt", FileMode.Append, FileAccess.Write);
-            StreamWriter streamWriter= new StreamWriter(fs);
-            streamWriter.WriteLine(DateTime.Now.ToShortDateString());
-            streamWriter.Close();
-        }
-
-        private void btnCzyt_Click(object sender, RoutedEventArgs e)
-        {
-            //FileStream fs = new FileStream("C:\\Users\\Student\\Documents\\cs_kolDN\\lab7\\dane.txt", FileMode.Open, FileAccess.Read);
-            StreamReader streamReader= new StreamReader(@"C:\Users\Student\Documents\cs_kolDN\lab7\dane.txt");
-            List<double> data = new List<double>();
-
-            while(streamReader.Peek() != -1) {
-                string liczba = streamReader.ReadLine();
-                data.Add(Convert.ToDouble(liczba));
-            }
-            streamReader.Close();
-            
-            foreach(var liczba in data)
-            {
-
-                lbDane.Items.Add($"{liczba:F3}");
-
-            }
-            var srednia = data.Average(); //sprawdzac czy jest wiecej niz 0 obiektow w data
-            var min = data.Min();
-            var max = data.Max();
-
-            lAvg.Content = srednia.ToString();
-            lMin.Content = min.ToString();
-            lMax.Content = max.ToString();
-
-        }
-
-        private void btnGrupa_Click(object sender, RoutedEventArgs e)
-        {
-            grupa1.Wyswietl(ref lbGrupa);
-        }
-
-        private void btnZapisz_Click(object sender, RoutedEventArgs e)
-        {
-            
             SaveFileDialog fileDialog= new SaveFileDialog();
-            fileDialog.FileName = "grupa.xml";
-            fileDialog.Filter = "XML-File | *.xml";
-            if (fileDialog.ShowDialog() == true)
+            fileDialog.FileName= "Grupa.json";
+            
+            if(fileDialog.ShowDialog() == true)
             {
-                FileStream fileStream = new FileStream(fileDialog.FileName, FileMode.Create);
-                XmlSerializer serializer = new XmlSerializer(typeof(Grupa));
-                serializer.Serialize(fileStream, grupa1);
-                fileStream.Close();
+                string json = JsonSerializer.Serialize<Grupa>(grupa1);
+                File.WriteAllTextAsync(fileDialog.FileName,json);
             }
-
         }
 
-        private void btnWczytaj_Click(object sender, RoutedEventArgs e)
+        private void DesJson_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.FileName = "grupa.xml";
-            fileDialog.Filter = "XML-File | *.xml";
-            if (fileDialog.ShowDialog() == true)
+            OpenFileDialog fileDialog= new OpenFileDialog();
+            if(fileDialog.ShowDialog() == true)
             {
-                FileStream fileStream = new FileStream(fileDialog.FileName, FileMode.Open);
-                XmlSerializer serializer = new XmlSerializer(typeof(Grupa));
-                Grupa nowaGrupa = (Grupa)serializer.Deserialize(fileStream);
-                fileStream.Close();
-                nowaGrupa.Wyswietl(ref lbGrupa);
+                string jsonToDeserialize = File.ReadAllText(fileDialog.FileName);
+                Grupa nowa = JsonSerializer.Deserialize<Grupa>(jsonToDeserialize);
             }
-            
+        }
+
+        private void Zapisz_Click(object sender, RoutedEventArgs e)
+        {
+            grupa1.ZapiszDoPliku("plikgrupy.txt");
+        }
+
+        private void PlikBmp_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog fileDialog= new OpenFileDialog();
+            fileDialog.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.bmp";
+            if(fileDialog.ShowDialog() == true)
+            {
+                
+
+                var stream = File.Open(fileDialog.FileName,FileMode.Open,FileAccess.Read);
+                BinaryReader binaryReader = new BinaryReader(stream);
+                binaryReader.ReadBytes(18);
+          
+                int szerr = binaryReader.ReadInt32();
+                int wyss = binaryReader.ReadInt32();
+                binaryReader.ReadBytes(2);
+                int kol = binaryReader.ReadInt16();
+                //byte[] kol = binaryReader.ReadBytes(2);
+
+                szer.Content = szerr;
+                wys.Content = wyss;
+                kolory.Content = kol;
+
+                binaryReader.Dispose();
+
+                BitmapImage bitmapImage = new BitmapImage(new Uri(fileDialog.FileName));
+                img.Source = bitmapImage;
+
+            }
 
         }
     }

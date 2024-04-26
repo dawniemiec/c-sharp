@@ -1,22 +1,20 @@
-﻿<Window x:Class="lab7.MainWindow"
+﻿<Window x:Class="lab7dom.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:lab7"
+        xmlns:local="clr-namespace:lab7dom"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btnMeld" Content="Melduj" HorizontalAlignment="Left" Margin="61,41,0,0" VerticalAlignment="Top" Click="btnMeld_Click"/>
-        <Button x:Name="btnCzyt" Content="Czytaj" HorizontalAlignment="Left" Margin="134,41,0,0" VerticalAlignment="Top" Click="btnCzyt_Click"/>
-        <Button x:Name="btnGrupa" Content="WyswietlGr" HorizontalAlignment="Left" Margin="359,41,0,0" VerticalAlignment="Top" Click="btnGrupa_Click"/>
-        <Button x:Name="btnZapisz" Content="ZapiszXML" HorizontalAlignment="Left" Margin="429,41,0,0" VerticalAlignment="Top" Click="btnZapisz_Click"/>
-        <Button x:Name="btnWczytaj" Content="WczytajXML" HorizontalAlignment="Left" Margin="499,41,0,0" VerticalAlignment="Top" Click="btnWczytaj_Click"/>
-        <ListBox x:Name="lbDane" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="134,81,517,217"/>
-        <ListBox x:Name="lbGrupa" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="480,81,94,217"/>
-        <Label x:Name="lAvg" Content="avg" HorizontalAlignment="Left" Margin="316,81,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lMin" Content="min" HorizontalAlignment="Left" Margin="316,101,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lMax" Content="max" HorizontalAlignment="Left" Margin="316,121,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="SerialJSON" Content="Button" HorizontalAlignment="Left" Margin="40,50,0,0" VerticalAlignment="Top" Click="SerialJSON_Click"/>
+        <Button x:Name="DesJson" Content="Button" HorizontalAlignment="Left" Margin="180,60,0,0" VerticalAlignment="Top" Click="DesJson_Click"/>
+        <Button x:Name="Zapisz" Content="Button" HorizontalAlignment="Left" Margin="335,70,0,0" VerticalAlignment="Top" Click="Zapisz_Click"/>
+        <Button x:Name="PlikBmp" Content="bmp" HorizontalAlignment="Left" Margin="40,150,0,0" VerticalAlignment="Top" Click="PlikBmp_Click"/>
+        <Label x:Name="szer" Content="Label" HorizontalAlignment="Left" Margin="35,191,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="wys" Content="Label" HorizontalAlignment="Left" Margin="35,221,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="kolory" Content="Label" HorizontalAlignment="Left" Margin="35,251,0,0" VerticalAlignment="Top"/>
+        <Image x:Name="img" HorizontalAlignment="Left" Height="181" Margin="180,150,0,0" VerticalAlignment="Top" Width="245"/>
 
     </Grid>
 </Window>
