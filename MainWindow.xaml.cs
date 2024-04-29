@@ -1,68 +1,50 @@
-﻿using System.Windows;
+﻿using System.Text;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Data;
+using Microsoft.Data.SqlClient;
 
-namespace WpfApp1
+namespace lab8
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    /// 
-
     public partial class MainWindow : Window
     {
-        private void rysPiramide(int x, int y, int szer, int wys, int ileStopni)
-        {
-            for (int i = 0; i < ileStopni; i++)
-            {
-                Rectangle rect = new Rectangle();
-                rect.Width = szer;
-                rect.Height = wys;
-                rect.Fill = Brushes.Black;
-                Canvas.SetLeft(rect, y - szer / 2);
-                Canvas.SetTop(rect, x);
-                cvBg.Children.Add(rect);
-                x += wys;
-                szer += 30;
-            }
-        }
-
-        enum kolorDoRozpoczecia
-        {
-            Czarny = 0,
-            Bialy = 1
-        }
-        private void rysSzach(int kol, int kolorRozp)
-        {
-            grGrid.Width = 150;
-            grGrid.Height = 150;
-            for (int i = 0; i < kol; i++)
-            {
-                grGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                grGrid.RowDefinitions.Add(new RowDefinition());
-                grGrid.ShowGridLines = true;
-            }
-            for (int i = 0; i < kol; i++)
-            {
-                for (int j = 0; j < kol; j++)
-                {
-                    bool czyCzarne = (i + j) % 2 == kolorRozp;
-                    Rectangle rectangle = new Rectangle();
-                    rectangle.Fill = czyCzarne ? System.Windows.Media.Brushes.Black : System.Windows.Media.Brushes.White;
-                    Grid.SetColumn(rectangle, i);
-                    Grid.SetRow(rectangle, j);
-                    grGrid.Children.Add(rectangle);
-                }
-            }
-        }
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            rysPiramide(0, 150, 50, 10, 5);
-            rysSzach(5, (int)kolorDoRozpoczecia.Bialy);
-            
+        private void btnWyswietl_Click(object sender, RoutedEventArgs e)
+        {
+            using (var connection = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Sklepik;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"))
+            {
+                SqlCommand polecenie = new SqlCommand("SELECT * FROM Towary", connection);
+                connection.Open();
+                //wielokrotne zapytanie
+                SqlDataReader reader = polecenie.ExecuteReader();
+                while (reader.Read())
+                {
+                    lbxDane.Items.Add($"{reader["idTowaru"]}. {reader["Nazwa"]}: {reader["Cena"]:F2} ({reader["Ilosc"]} szt.)");
+                }
+                reader.Close();
+
+                //pojedyncze wywolanie
+                SqlCommand polecenie2 = new SqlCommand("SELECT AVG(Cena) FROM Towary", connection);
+                decimal avgPrice =(decimal)polecenie2.ExecuteScalar();
+                lblAvgPrice.Content = $"{avgPrice:C}";
+
+                connection.Close();
+
+            }
         }
     }
 }
