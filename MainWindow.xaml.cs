@@ -1,68 +1,58 @@
-﻿using System.Windows;
+﻿using Lab8_entity.Models;
+using System.Text;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApp1
+namespace Lab8_entity
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    /// 
-
     public partial class MainWindow : Window
     {
-        private void rysPiramide(int x, int y, int szer, int wys, int ileStopni)
-        {
-            for (int i = 0; i < ileStopni; i++)
-            {
-                Rectangle rect = new Rectangle();
-                rect.Width = szer;
-                rect.Height = wys;
-                rect.Fill = Brushes.Black;
-                Canvas.SetLeft(rect, y - szer / 2);
-                Canvas.SetTop(rect, x);
-                cvBg.Children.Add(rect);
-                x += wys;
-                szer += 30;
-            }
-        }
-
-        enum kolorDoRozpoczecia
-        {
-            Czarny = 0,
-            Bialy = 1
-        }
-        private void rysSzach(int kol, int kolorRozp)
-        {
-            grGrid.Width = 150;
-            grGrid.Height = 150;
-            for (int i = 0; i < kol; i++)
-            {
-                grGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                grGrid.RowDefinitions.Add(new RowDefinition());
-                grGrid.ShowGridLines = true;
-            }
-            for (int i = 0; i < kol; i++)
-            {
-                for (int j = 0; j < kol; j++)
-                {
-                    bool czyCzarne = (i + j) % 2 == kolorRozp;
-                    Rectangle rectangle = new Rectangle();
-                    rectangle.Fill = czyCzarne ? System.Windows.Media.Brushes.Black : System.Windows.Media.Brushes.White;
-                    Grid.SetColumn(rectangle, i);
-                    Grid.SetRow(rectangle, j);
-                    grGrid.Children.Add(rectangle);
-                }
-            }
-        }
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            rysPiramide(0, 150, 50, 10, 5);
-            rysSzach(5, (int)kolorDoRozpoczecia.Bialy);
-            
+        private void btnShowDb_Click(object sender, RoutedEventArgs e)
+        {
+            var db = new DbUczelnia();
+
+            //foreach (var student in db.Studenci)
+            //{
+            //    lbxData.Items.Add(student);
+            //}
+
+            lbxData.ItemsSource = db.Studenci.ToList();
+            lblAvgOcen.Content = db.Studenci.Average(s=>s.Ocena);
+        }
+
+        private void btnDodaj_Click(object sender, RoutedEventArgs e)
+        {
+            string imie = txtImie.Text;
+            string nazwisko = txtNazwisko.Text;
+            byte wiek = Convert.ToByte(txtWiek.Text);
+            double? ocena = Convert.ToDouble(txtOcena.Text);
+
+            var db = new DbUczelnia();
+
+            Student student = new Student()
+            {Imie = imie, Nazwisko=nazwisko, Wiek=wiek, Ocena=ocena };
+
+            db.Studenci.Add(student);
+            db.SaveChanges();
+
+            lbxData.ItemsSource = db.Studenci.ToList();
+
+
         }
     }
 }
