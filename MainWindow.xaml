@@ -1,23 +1,21 @@
-﻿<Window x:Class="lab8_DBEF.MainWindow"
+﻿<Window x:Class="lab8_DB.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:lab8_DBEF"
+        xmlns:local="clr-namespace:lab8_DB"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListBox x:Name="lbxData" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="0,0,584,261"/>
-        <Label x:Name="lAvgPulap" Content="Label" HorizontalAlignment="Left" Margin="16,199,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="btnRef" Content="ref" HorizontalAlignment="Left" Margin="108,212,0,0" VerticalAlignment="Top" Click="btnRef_Click"/>
-        <TextBox x:Name="txtProd" HorizontalAlignment="Left" Margin="249,49,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="txtModel" HorizontalAlignment="Left" Margin="249,69,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="txtPredkosc" HorizontalAlignment="Left" Margin="249,89,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="txtPulap" HorizontalAlignment="Left" Margin="249,109,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="txtUdzwig" HorizontalAlignment="Left" Margin="249,129,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="btnAdd" Content="add" HorizontalAlignment="Left" Margin="249,173,0,0" VerticalAlignment="Top" Click="btnAdd_Click"/>
-        <TextBox x:Name="txtId" HorizontalAlignment="Left" Margin="435,67,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="btnDel" Content="del" HorizontalAlignment="Left" Margin="435,103,0,0" VerticalAlignment="Top" Click="btnDel_Click"/>
+        <ListBox x:Name="lbxComputers" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="10,83,549,134"/>
+        <TextBox x:Name="txtName" HorizontalAlignment="Left" Margin="280,83,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="txtSerial" HorizontalAlignment="Left" Margin="280,103,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="txtCores" HorizontalAlignment="Left" Margin="280,123,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="btnAdd" Content="add" HorizontalAlignment="Left" Margin="280,159,0,0" VerticalAlignment="Top" Click="btnAdd_Click"/>
+        <Button x:Name="btnDel" Content="del" HorizontalAlignment="Left" Margin="450,159,0,0" VerticalAlignment="Top" Click="btnDel_Click"/>
+        <TextBox x:Name="txtId" HorizontalAlignment="Left" Margin="450,123,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="btnRef" Content="ref" HorizontalAlignment="Left" Margin="25,320,0,0" VerticalAlignment="Top" Click="btnRef_Click" />
+        <Label x:Name="lSumCores" Content="Label" HorizontalAlignment="Left" Margin="102,330,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>
