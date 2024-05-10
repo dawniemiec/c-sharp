@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Microsoft.Data.SqlClient;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,59 +10,31 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace lab9C
+namespace lab9_parrallel
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        (double, double, double) MinimalizujFunkcje(double minX, double maxX, double minY, double maxY, int ileIteracji, Func<double, double, double> funkcja)
-        {
-            double? najlepszyX = null;
-            double? najepszyY = null;
-            double? najWart = null;
-
-            object semafor = new object();
-
-            Random los = new Random();
-            //for (int i = 0; i < ileIteracji; i++)
-
-            ParallelOptions parallelOptions = new ParallelOptions
-            {
-                MaxDegreeOfParallelism = 7
-        };
-
-            Parallel.For(0, ileIteracji, parallelOptions, i =>
-                {
-                    double x, y;
-                    lock (los) {
-                        x = los.NextDouble() * (maxX - minX) + minX;
-                        y = los.NextDouble() * (maxY - minY) + minY;
-                    }
-                    
-                    double wart = funkcja(x, y);
-                    lock (semafor) {
-                        if (najWart == null || najWart > wart)
-                        {
-                            najlepszyX = x;
-                            najepszyY = y;
-                            najWart = wart;
-                        }
-                    }
-                    
-                });
-            return ((double)najlepszyX, (double)najepszyY, (double)najWart);
-        }
-
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void btnRef_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(MinimalizujFunkcje(-10, 10, -10, 10, 1000000000, (x,y)=>Math.Sin(x)+Math.Cos(y)).ToString());
+            using(var connection = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Uczelnia;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"))
+            {
+                SqlCommand command = new SqlCommand("EXEC sp_GetStudents", connection);
+                connection.Open();
+                var reader = await command.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    lbxData.Items.Add(reader["Name"]);
+                }
+                reader.Close();
+            }
         }
     }
 }
