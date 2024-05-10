@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Lab9.ViewModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,7 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace lab9_parrallel
+namespace Lab9
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -20,21 +20,8 @@ namespace lab9_parrallel
         public MainWindow()
         {
             InitializeComponent();
-        }
+            this.DataContext = new StudentViewModel();
 
-        private async void btnRef_Click(object sender, RoutedEventArgs e)
-        {
-            using(var connection = new SqlConnection(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Uczelnia;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False"))
-            {
-                SqlCommand command = new SqlCommand("EXEC sp_GetStudents", connection);
-                connection.Open();
-                var reader = await command.ExecuteReaderAsync();
-                while (reader.Read())
-                {
-                    lbxData.Items.Add(reader["Name"]);
-                }
-                reader.Close();
-            }
         }
     }
 }
