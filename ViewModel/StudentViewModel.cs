@@ -17,7 +17,7 @@ namespace Lab9.ViewModel
         private ICommand _resetCommand;
         private ICommand _editCommand;
         private ICommand _deleteCommand;
-        private StudentRepository _repository;
+        private IStudentRepository _repository;
         private Student _studentEntity = null;
         public StudentRecord StudentRecord { get; set; }
         public StudentEntities StudentEntities { get; set; }
@@ -66,10 +66,10 @@ namespace Lab9.ViewModel
             }
         }
 
-        public StudentViewModel()
+        public StudentViewModel(IStudentRepository repo)
         {
             _studentEntity = new Student();
-            _repository = new StudentRepository();
+            _repository = repo;
             StudentRecord = new StudentRecord();
             GetAll();
         }
