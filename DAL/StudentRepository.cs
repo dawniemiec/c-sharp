@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lab9.DAL
 {
-    public class StudentRepository
+    public class StudentRepository: IStudentRepository
     {
         private StudentEntities studentContext = null;
 
